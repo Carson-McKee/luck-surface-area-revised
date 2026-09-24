@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luck Surface Area_Revised</title>
+<style>
+@font-face{font-family:"TeX Gyre Heros";src:url("fonts/texgyreheros-regular.woff") format("woff");font-weight:400;font-display:swap;}
+@font-face{font-family:"TeX Gyre Heros";src:url("fonts/texgyreheros-bold.woff") format("woff");font-weight:700;font-display:swap;}
+@font-face{font-family:"Roboto Mono";src:url("fonts/robotomono-regular.woff") format("woff");font-weight:400;font-display:swap;}
+@font-face{font-family:"Roboto Mono";src:url("fonts/robotomono-medium.woff") format("woff");font-weight:500;font-display:swap;}
+:root{
+  --stygian:#1D1F21;--ultramarine:#0411D9;--electric-blue:#0F9AFF;
+  --snowbound:#EBF4FB;--aspen:#DEEAF4;--digital-mint:#42FF88;
+  --break-red:#E5342B;
+  --ink:var(--stygian);--paper:var(--snowbound);--field:var(--aspen);
+  --accent:var(--ultramarine);--live:var(--electric-blue);--signal:var(--digital-mint);
+  --over:var(--electric-blue);--under:var(--ultramarine);
+  --display:"TeX Gyre Heros",Arial,sans-serif;--mono:"Roboto Mono",Consolas,monospace;
+  --margin:clamp(20px,5vw,96px);--maxw:1300px;--hair:rgba(29,31,33,0.16);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;scrollbar-gutter:stable;}
+body{overflow-x:hidden;}
+body{font-family:var(--display);font-size:18px;line-height:28px;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;letter-spacing:0.01em;overflow-x:hidden;}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opacity:0.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+.stage{max-width:var(--maxw);margin:0 auto;padding:0 var(--margin);position:relative;z-index:2;}
+.mono{font-family:var(--mono);}
+.rail{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:80;width:0%;}
+
+/* grid appears only where a section opts in */
+.gridded{position:relative;}
+.gridded::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--hair) 0.5px,transparent 0.5px),linear-gradient(90deg,var(--hair) 0.5px,transparent 0.5px);
+  background-size:80px 80px;opacity:0.6;
+  -webkit-mask-image:radial-gradient(ellipse 100% 70% at 50% 40%,#000 30%,transparent 90%);mask-image:radial-gradient(ellipse 100% 70% at 50% 40%,#000 30%,transparent 90%);}
+.gridded>*{position:relative;z-index:1;}
+
+.eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.2em;color:var(--accent);}
+.rise{opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);}
+.rise.in{opacity:1;transform:none;}
+@media (prefers-reduced-motion:reduce){.rise{opacity:1;transform:none;transition:none;}html{scroll-behavior:auto;}
+  .drift,.drift2{animation:none!important;}}
+
+/* quiet ambient motion on a few elements */
+@keyframes drift{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+@keyframes drift2{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
+.drift{animation:drift 6s ease-in-out infinite;}
+.drift2{animation:drift2 7.5s ease-in-out infinite;}
+/* strain: calm drift most of the cycle, brief shake near the end like it may break */
+@keyframes strain{
+  0%,54%{transform:translate(0,0);}
+  55%{transform:translate(0.5px,-1px);}
+  56.5%{transform:translate(-1px,1px);}
+  58%{transform:translate(1px,-1.5px);}
+  59.5%{transform:translate(-1px,1px);}
+  61%{transform:translate(1.5px,-1px);}
+  62.5%{transform:translate(-1.5px,1.5px);}
+  64%{transform:translate(1px,-2px);}
+  65.5%{transform:translate(-1px,1px);}
+  67%{transform:translate(1.5px,-1.5px);}
+  68.5%{transform:translate(-1px,1px);}
+  70%{transform:translate(0.5px,-1px);}
+  72%,100%{transform:translate(0,0);}
+}
+.hero-formula .breaker{position:relative;display:inline-block;}
+.hero-formula .breaker .g-eq,.hero-formula .breaker .g-neq{display:inline-block;}
+.hero-formula .breaker .g-neq{position:absolute;left:0;top:0;opacity:0;color:var(--stygian);}
+/* the swap is timed to the strain peak (58-70% of the 5.5s cycle) */
+@keyframes glyphbreak{
+  0%,62%{opacity:0;transform:scale(1);}
+  63%{opacity:1;transform:scale(1.06);}
+  85%{opacity:1;transform:scale(1.03);}
+  86%,100%{opacity:0;transform:scale(1);}
+}
+@keyframes glyphhide{
+  0%,62%{opacity:1;}
+  63%,85%{opacity:0;}
+  86%,100%{opacity:1;}
+}
+.hero-formula .breaker .g-neq{animation:glyphbreak 5s steps(1,end) infinite;}
+.hero-formula .breaker .g-eq{animation:glyphhide 5s steps(1,end) infinite;}
+@media (prefers-reduced-motion:reduce){.hero-formula .breaker .g-neq,.hero-formula .breaker .g-eq{animation:none;}.hero-formula .breaker .g-neq{opacity:0;}}
+.strain{animation:strain 5s steps(1,end) infinite;transform-origin:center center;will-change:transform;}
+@media (prefers-reduced-motion:reduce){.strain{animation:none!important;}}
+
+/* HERO: title leads, then formula */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding:10vh 0;}
+.hero-title{font-family:var(--display);font-weight:700;letter-spacing:-0.04em;line-height:0.92;font-size:clamp(48px,10vw,132px);color:var(--ink);}
+.hero-title .rev{display:block;color:var(--ink);}
+.hero-formula{font-family:var(--display);font-weight:700;letter-spacing:-0.03em;line-height:1;font-size:clamp(40px,8vw,104px);margin-top:8vh;color:var(--ink);}
+.hero-formula .eq{color:var(--live);}
+.hero-legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:36px;font-family:var(--mono);font-size:13px;letter-spacing:0.02em;color:rgba(29,31,33,0.7);}
+.hero-legend b{color:var(--accent);font-weight:500;}
+.hero-intro{margin-top:28px;max-width:44ch;font-size:clamp(15px,1.5vw,17px);line-height:1.5;color:rgba(29,31,33,0.7);}
+.hero-flaw{margin-top:7vh;max-width:30ch;font-size:clamp(22px,2.6vw,34px);line-height:1.18;letter-spacing:-0.03em;}
+.hero-flaw .strike{text-decoration:line-through;text-decoration-color:var(--live);text-decoration-thickness:3px;opacity:0.5;}
+
+/* ===== SECTION ===== */
+section.beat{padding:18vh 0;position:relative;}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:22px;}
+.title{font-family:var(--display);font-weight:700;line-height:0.98;letter-spacing:-0.04em;font-size:clamp(32px,5.4vw,68px);}
+.lede{font-size:clamp(20px,2.2vw,26px);line-height:1.4;letter-spacing:-0.02em;}
+p.body{font-size:18px;line-height:30px;margin-bottom:24px;}
+.pull-emph{color:rgba(29,31,33,0.5);}
+.pull-emph .emph-where{color:var(--accent);font-size:1.25em;letter-spacing:-0.05em;}
+.pull-emph .emph-beats{color:var(--live);}
+.pull{font-family:var(--display);font-weight:700;line-height:1.06;letter-spacing:-0.04em;font-size:clamp(26px,4vw,52px);}
+
+/* layout: asymmetry pulled in ~15% */
+.col-r{max-width:58ch;margin-left:auto;}
+.col-l{max-width:56ch;}
+.col-c{max-width:46ch;margin:0 auto;text-align:center;}
+.push{margin-top:clamp(28px,6vw,88px);}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,80px);align-items:start;}
+.wide-r{display:grid;grid-template-columns:0.85fr 1.15fr;gap:clamp(28px,5vw,72px);align-items:baseline;}
+.wide-l{display:grid;grid-template-columns:1.15fr 0.85fr;gap:clamp(28px,5vw,72px);align-items:baseline;}
+.offset-r{transform:translateX(clamp(0px,2.5vw,54px));}
+
+/* dark sections (ID page 3) */
+section.dark{background:var(--stygian);color:var(--snowbound);position:relative;}
+section.dark.gridded::before{background-image:linear-gradient(rgba(235,244,251,0.07) 0.5px,transparent 0.5px),linear-gradient(90deg,rgba(235,244,251,0.07) 0.5px,transparent 0.5px);}
+section.dark .tag{color:var(--electric-blue);}
+section.dark p.body{color:rgba(235,244,251,0.82);}
+section.dark .title{color:var(--snowbound);}
+.dark-inner{position:relative;z-index:2;}
+
+/* photo panels */
+.photo{position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;width:100vw;max-width:100vw;height:clamp(380px,74vh,760px);overflow:hidden;background:var(--stygian);}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:saturate(0.7) contrast(1.02);transition:filter 1.1s ease, transform 6s ease;}
+.photo:hover img{filter:saturate(0.92) contrast(1.04);transform:scale(1.03);}
+.photo .veil{position:absolute;inset:0;background:linear-gradient(90deg,rgba(29,31,33,0.6) 0%,rgba(29,31,33,0.12) 55%,rgba(29,31,33,0.42) 100%);}
+.photo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:45%;z-index:1;pointer-events:none;background:linear-gradient(to top,rgba(29,31,33,0.72) 0%,rgba(29,31,33,0.35) 45%,transparent 100%);}
+.photo .grid-ov{position:absolute;inset:0;pointer-events:none;opacity:0.45;
+  background-image:linear-gradient(rgba(235,244,251,0.12) 0.5px,transparent 0.5px),linear-gradient(90deg,rgba(235,244,251,0.12) 0.5px,transparent 0.5px);background-size:64px 64px;}
+.photo .ov{position:absolute;z-index:3;color:var(--snowbound);font-family:var(--mono);}
+.photo .ov-tl{top:26px;left:clamp(20px,5vw,64px);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--digital-mint);}
+.photo .ov-cap{max-width:32ch;bottom:30px;left:clamp(20px,5vw,64px);font-family:var(--display);font-weight:700;font-size:clamp(22px,3vw,40px);letter-spacing:-0.03em;line-height:1.04;text-shadow:0 2px 20px rgba(29,31,33,0.5);}
+.photo .ov-br{bottom:30px;right:clamp(20px,5vw,64px);text-align:right;}
+.photo .ov-metric{font-family:var(--display);font-weight:700;font-size:clamp(38px,7vw,88px);line-height:0.9;letter-spacing:-0.04em;text-shadow:0 2px 24px rgba(29,31,33,0.55);}
+.photo .ov-sub{font-size:11px;letter-spacing:0.08em;margin-top:6px;color:rgba(235,244,251,0.78);}
+.photo .ov-wrap{position:absolute;left:clamp(20px,5vw,64px);right:clamp(20px,5vw,64px);bottom:30px;z-index:3;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;}
+.photo .ov-cap{position:static;bottom:auto;left:auto;}
+.photo .ov-br{position:static;bottom:auto;right:auto;}
+.photo .crosshair{position:absolute;z-index:3;width:24px;height:24px;opacity:0.9;transition:opacity .5s;}
+.photo:hover .crosshair{opacity:1;}
+.photo .crosshair::before,.photo .crosshair::after{content:"";position:absolute;background:var(--digital-mint);}
+.photo .crosshair::before{left:50%;top:0;width:1px;height:100%;transform:translateX(-50%);}
+.photo .crosshair::after{top:50%;left:0;height:1px;width:100%;transform:translateY(-50%);}
+
+/* symptoms: hover reveal */
+.symptoms-head{margin-top:8vh;margin-bottom:2.5vh;max-width:40ch;}
+.symptoms-head .lede{margin-top:14px;}
+.symptoms{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:6vh;border:0.5px solid var(--hair);}
+.symptom{padding:34px 28px;position:relative;min-height:240px;display:flex;flex-direction:column;border-right:0.5px solid var(--hair);transition:background .4s;}
+.symptom:last-child{border-right:0;}
+.symptom:hover{background:var(--aspen);}
+.symptom .sidx{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:0.1em;}
+.symptom .sname{font-family:var(--display);font-weight:700;font-size:24px;letter-spacing:-0.02em;margin:16px 0 12px;}
+.symptom .sdesc{font-size:14px;line-height:22px;color:rgba(29,31,33,0.78);}
+.symptom .sglyph{margin-top:auto;padding-top:20px;transition:transform .5s;}
+.symptom:hover .sglyph{transform:translateX(6px);}
+
+/* fold */
+.fold{background:var(--field);border:0.5px solid rgba(29,31,33,0.3);overflow:hidden;position:relative;}
+.fold::before{content:"";position:absolute;top:0;right:0;border-width:0 26px 26px 0;border-style:solid;border-color:transparent var(--paper) transparent transparent;z-index:2;}
+.fold-stage{padding:44px 38px;min-height:360px;color:var(--ink);}
+section.dark .fold-stage{color:var(--ink);}
+.fold-eyebrow{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:var(--accent);margin-bottom:26px;}
+.fold-tabs{display:flex;border-top:0.5px solid rgba(29,31,33,0.2);}
+.fold-tab{flex:1;padding:16px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.12em;background:transparent;border:0;border-right:0.5px solid rgba(29,31,33,0.15);cursor:pointer;color:rgba(29,31,33,0.5);transition:all .3s;}
+.fold-tab:last-child{border-right:0;}
+.fold-tab:hover{color:var(--accent);background:rgba(4,17,217,0.04);}
+.fold-tab.on{color:var(--accent);background:var(--paper);}
+.fold-panel{animation:foldin .5s cubic-bezier(.2,.7,.2,1);}
+@keyframes foldin{from{opacity:0;transform:perspective(1100px) rotateX(-8deg) translateY(9px);}to{opacity:1;transform:none;}}
+@media (prefers-reduced-motion:reduce){.fold-panel{animation:none;}}
+.env-row{display:grid;grid-template-columns:150px 1fr 64px 64px;align-items:center;gap:14px;padding:10px 0;transition:opacity .3s;}
+.env-head{display:grid;grid-template-columns:150px 1fr 64px 64px;gap:14px;padding:0 0 8px;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(29,31,33,0.55);border-bottom:0.5px solid rgba(29,31,33,0.18);margin-bottom:6px;}
+.env-head .h-num{text-align:right;}
+.env-name{font-family:var(--mono);font-size:12px;}
+.env-track{height:16px;background:rgba(29,31,33,0.06);position:relative;}
+.env-fill{height:100%;position:absolute;top:0;left:0;}
+.env-val{font-family:var(--mono);font-size:13px;text-align:right;font-weight:500;}
+.env-val .u{font-size:9px;opacity:0.6;display:block;font-weight:400;letter-spacing:0.02em;}
+.legend{display:flex;gap:18px;margin-top:18px;font-family:var(--mono);font-size:10px;color:rgba(29,31,33,0.65);letter-spacing:0.04em;flex-wrap:wrap;}
+.chip{display:inline-block;width:8px;height:8px;margin-right:5px;vertical-align:1px;}
+.poles{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.pole{padding:26px;color:var(--snowbound);}
+.pole .role{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;opacity:0.85;}
+.pole .big{font-family:var(--display);font-size:clamp(30px,5vw,48px);font-weight:700;line-height:1;margin:8px 0 3px;letter-spacing:-0.03em;}
+.pole .sub{font-family:var(--mono);font-size:11px;}
+
+/* 2.62 mega with plain-english meaning */
+.mega{position:relative;padding:4vh 0;}
+.mega-n{font-family:var(--display);font-weight:700;font-size:clamp(120px,32vw,420px);line-height:0.74;color:var(--over);letter-spacing:-0.05em;position:relative;z-index:2;text-align:right;}
+.mega-fold{position:absolute;top:50%;left:0;transform:translateY(-50%);z-index:1;pointer-events:none;width:64%;height:auto;}
+.mega-plain{max-width:40ch;margin-top:4vh;font-size:clamp(20px,2.4vw,28px);line-height:1.35;letter-spacing:-0.02em;}
+.mega-plain b{color:var(--over);font-weight:700;}
+
+/* tests: hover reveal */
+.tests{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-top:6vh;}
+.test{background:var(--field);border:0.5px solid rgba(29,31,33,0.28);padding:36px 28px;position:relative;overflow:hidden;transition:background .4s;}
+.test:hover{background:#e2ecf6;}
+.test .tnum{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:0.1em;}
+.test .tname{font-family:var(--display);font-weight:700;font-size:28px;margin:14px 0 12px;letter-spacing:-0.02em;}
+.test .tq{font-size:15px;line-height:23px;color:rgba(29,31,33,0.8);}
+.test .tglyph{position:absolute;bottom:-22px;right:-22px;opacity:0.14;transition:opacity .5s,transform .6s;}
+.test:hover .tglyph{opacity:0.28;transform:rotate(6deg);}
+
+/* revised formula */
+.revformula{font-family:var(--display);font-weight:700;letter-spacing:-0.03em;line-height:0.9;font-size:clamp(56px,13vw,168px);text-align:center;}
+.revformula .eq{color:var(--accent);}
+.revformula .add,.revformula .e{color:var(--live);}
+.rev-defs{display:grid;grid-template-columns:repeat(4,auto);gap:clamp(14px,3vw,44px);justify-content:center;margin-top:5vh;font-family:var(--mono);font-size:13px;color:rgba(29,31,33,0.72);}
+.rev-defs b{color:var(--accent);font-weight:500;}
+.rev-defs .eh{color:var(--live);}
+
+/* seam */
+.ledger{margin-top:5vh;border-top:1.25px solid var(--ink);}
+.seam-row{display:grid;grid-template-columns:160px 1fr;gap:32px;padding:24px 0;border-bottom:0.5px solid var(--hair);align-items:baseline;transition:padding-left .35s;}
+.seam-row:hover{padding-left:10px;}
+.seam-k{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);}
+.seam-v{font-size:16px;line-height:25px;max-width:58ch;}
+.seam-row:last-child .seam-k{color:var(--ink);font-weight:500;}
+
+/* close */
+.close{padding:16vh 0 12vh;}
+.mint-line{display:inline-block;background:var(--signal);color:var(--stygian);font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,60px);padding:10px 26px;letter-spacing:-0.04em;line-height:1.04;}
+.dl{display:inline-flex;align-items:center;gap:12px;font-family:var(--mono);font-size:13px;letter-spacing:0.04em;color:var(--paper);background:var(--ink);padding:17px 30px;text-decoration:none;margin-top:40px;transition:background .3s,transform .3s;}
+.dl:hover{background:var(--accent);transform:translateY(-2px);}
+.footer{padding:52px 0 76px;font-family:var(--mono);font-size:11px;color:var(--accent);opacity:0.7;line-height:1.9;border-top:0.5px solid var(--hair);margin-top:10vh;}
+
+@media (max-width:760px){
+  .photo{height:clamp(300px,64vh,520px);}
+  .photo .ov-cap{position:static;max-width:none;left:auto;bottom:auto;margin:0;}
+  .photo .ov-br{position:static;text-align:left;right:auto;bottom:auto;margin-top:14px;}
+  .photo .ov-wrap{position:absolute;left:20px;right:20px;bottom:22px;z-index:3;}
+  .photo .ov-cap{font-size:clamp(20px,6vw,28px);}
+  .photo .ov-metric{font-size:clamp(34px,10vw,56px);}
+  .photo .crosshair{display:none;}
+  .revformula{font-size:clamp(40px,13vw,72px);white-space:nowrap;}
+  .revwrap,.beat.gridded{overflow:hidden;}
+
+  body{font-size:16px;line-height:26px;}
+  .symptoms,.tests,.poles,.split,.wide-r,.wide-l{grid-template-columns:1fr;}
+  .symptom{border-right:0;border-bottom:0.5px solid var(--hair);min-height:0;}
+  .symptom:last-child{border-bottom:0;}
+  .offset-r{transform:none;}
+  .env-row{grid-template-columns:96px 1fr 48px 48px;gap:8px;}
+  .env-head{grid-template-columns:96px 1fr 48px 48px;gap:8px;}
+  .col-r,.hero-flaw{margin-left:0;max-width:none;}
+  .mega-n{font-size:clamp(96px,42vw,220px);text-align:left;}
+  .rev-defs{grid-template-columns:1fr 1fr;}
+  .seam-row{grid-template-columns:1fr;gap:6px;}
+}
+
+/* roberts interstitial */
+.interstitial{padding:12vh 0 4vh;max-width:60ch;}
+.interstitial .kick{font-family:var(--mono);font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:24px;}
+.interstitial p{font-size:clamp(18px,1.9vw,21px);line-height:1.6;margin-bottom:20px;color:rgba(29,31,33,0.88);}
+.interstitial .inline-link{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(4,17,217,0.35);transition:border-color .3s;}
+.interstitial .inline-link:hover{border-color:var(--accent);}
+.interstitial .formula-gloss{font-family:var(--mono);font-size:14px;letter-spacing:0.02em;color:var(--accent);margin-top:-6px;}
+.interstitial .lsa-link{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;letter-spacing:0.03em;color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(4,17,217,0.3);padding-bottom:2px;transition:border-color .3s,gap .3s;}
+.interstitial .lsa-link:hover{border-color:var(--accent);gap:12px;}
+</style>
+</head>
+<body>
+<div class="rail" id="rail"></div>
+<div class="stage">
+
+  <!-- HERO: title first, then formula -->
+  <header class="hero">
+    <h1 class="hero-title rise">Luck Surface<br>Area<span class="rev">_Revised</span></h1>
+    <div class="hero-formula rise strain">L <span class="eq breaker"><span class="g-eq">=</span><span class="g-neq">&ne;</span></span> D <span class="eq">&times;</span> T</div>
+    <div class="hero-legend rise">
+      <span><b>L</b> luck</span>
+      <span><b>D</b> doing, what you make</span>
+      <span><b>T</b> telling, who you tell</span>
+    </div>
+    <div class="hero-intro rise">This is the formula startup culture has repeated for 15 years as the process for making your own luck.</div>
+    <div class="hero-flaw rise">Do more, tell more; therefore, luck has more surface to land on. Feels intuitive. Clean. <span class="strike">Correct.</span></div>
+  </header>
+
+  <section class="interstitial">
+    <div class="kick rise" style="color:var(--accent);margin-bottom:18px;">A research output of the <a href="https://carson-mckee.github.io/post-industrial-school/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(4,17,217,0.4);">Post-Industrial School</a>: reading the shift from the industrial order to what comes after.</div>
+    <div class="kick rise">Roberts, 2010</div>
+    <p class="rise">Jason Roberts, an entrepreneur and blogger, <a class="inline-link" href="https://www.codusoperandi.com/posts/increasing-your-luck-surface-area" target="_blank" rel="noopener">made this formula infamous in 2010</a>. It has become foundational in startup culture ever since. It is also incomplete.</p>
+    <p class="rise">He argued that luck is not fixed. Luck scales. The serendipity in your life is proportional to doing something you are genuinely passionate about, multiplied by the number of people who come to know about it. That makes sense. He formalized it as L = D &times; T.</p>
+    <p class="rise formula-gloss">Luck = Doing &times; Telling.</p>
+    <p class="rise">The idea stuck. 15 years later and it is startup canon: repeated in accelerators, pitches and onboarding decks. It lasts because it is simple and actionable. It rewards effort. Work harder in public and luck will find you.</p>
+    <p class="rise">That is exactly why it is worth revising. A formula this widespread stops being examined. It&rsquo;s assumed.</p>
+    <p class="rise">In 15 years, considering all that has happened in business and technology, it has been repeated far more often than it has been interrogated.</p>
+  </section>
+
+  <!-- 01 flaw -->
+  <section class="beat">
+    <div class="wide-r">
+      <div class="rise"><div class="tag">01 &middot; the assumption</div><h2 class="title">The flaw is in the Telling&nbsp;(T)</h2></div>
+      <div>
+        <p class="body rise">The formula thinks of telling as volume. More people &rarr; more surface &rarr; more luck. It assumes every channel you tell through is the same channel, where the only difference between them is the amount of reach.</p>
+        <p class="body rise">That is an assumption that fails. Telling is not a quantity. It is an environment.</p>
+        <p class="body rise">The same effort, spent in one place rather than another, returns wildly different luck. There is a second variable hiding inside Roberts&rsquo; formula that nobody has measured. That is the insight I am looking for. Naming it changes the investigation: not a practical fix you apply for a better outcome, but a structural one, how you rebuild a business model for 21st-century reality instead of running a 20th-century model on digital.</p>
+      </div>
+    </div>
+    <div class="push col-r rise"><div class="pull pull-emph"><span class="emph-where">Where</span> you tell <span class="emph-beats">beats how much</span> you tell.</div></div>
+  </section>
+
+  <!-- 02 vacancy + symptoms (gridded) -->
+  <section class="beat gridded">
+    <div class="col-l rise"><div class="tag">02 &middot; vacancy</div><h2 class="title">Serendipity</h2></div>
+    <div class="split push">
+      <p class="body rise">Serendipity is a useful accident. In the startup space, it is the kind of encounter you didn&rsquo;t plan that changes what might happen next. A chance encounter that results in a referral or an employee. A possible client. It feels like luck.</p>
+      <p class="body rise">Serendipity used to be free-range. Its existence was a byproduct of the industrial era. The firm that you worked in located you in a building, assigned you on a team, funded your conferences and gave you a title that told other people how to relate to you. You never needed to create serendipitous conditions. Institutions and businesses did. This structure has been dissolving in the post-industrial reality of remote work and distributed teams.</p>
+    </div>
+    <div class="symptoms-head rise">
+      <div class="tag">The symptoms of its absence</div>
+      <p class="lede">Three things replace that, in a post-industrial work environment.</p>
+    </div>
+    <div class="symptoms rise">
+      <div class="symptom">
+        <div class="sidx">i</div><div class="sname">Vacated encounter</div>
+        <div class="sdesc">The collisions and encounters that a workplace used to stage no longer happen on their own. This is a structural issue, not an organizational or company culture failure.</div>
+        <svg class="sglyph" width="64" height="24" viewBox="0 0 64 24"><line x1="0" y1="12" x2="27" y2="12" stroke="#0411D9" stroke-width="1"/><line x1="37" y1="12" x2="64" y2="12" stroke="#0411D9" stroke-width="1" stroke-dasharray="3 3"/><circle cx="32" cy="12" r="3.5" fill="none" stroke="#0411D9"/></svg>
+      </div>
+      <div class="symptom">
+        <div class="sidx">ii</div><div class="sname">Digital fills the gap</div>
+        <div class="sdesc">Social and digital media become the default environment for business encounters and connection. Slack, Teams, LinkedIn provide access to a supply of people. These are presented like a serendipitous environment but they deliver almost none of it.</div>
+        <svg class="sglyph" width="64" height="24" viewBox="0 0 64 24"><path d="M0 5 H64 M0 12 H64 M0 19 H64" stroke="#0F9AFF" stroke-width="1"/></svg>
+      </div>
+      <div class="symptom">
+        <div class="sidx">iii</div><div class="sname">Networking unpracticed</div>
+        <div class="sdesc">Networking becomes an assumed but untaught skill that assumes the role of a business connection environment to enable serendipitous encounters. But the capacity was never developed, producing reduced benefits and results. The always available channels replaced serendipity with a constant stream of unwanted pitches.</div>
+        <svg class="sglyph" width="64" height="24" viewBox="0 0 64 24"><path d="M2 20 Q18 2 32 12 T62 7" fill="none" stroke="#0411D9" stroke-width="1"/></svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHOTO 1 crowd -->
+  <div class="photo rise">
+    <img src="img/crowd.jpg" alt="People scattered across a gallery, each alone in the same room" style="object-position:center 45%;">
+    <div class="veil"></div><div class="grid-ov"></div>
+    <div class="crosshair" style="top:34%;left:28%;"></div>
+    <div class="crosshair" style="top:58%;left:66%;"></div>
+    <div class="ov ov-tl">fig. 01 &middot; ambient presence, no encounter</div>
+    <div class="ov-wrap"><div class="ov ov-cap">Being around people is not the same as meeting them.</div><div class="ov ov-br"><div class="ov-metric" style="color:var(--electric-blue);">9.4</div></div><div class="ov-sub">hours per month in social / digital media</div></div>
+  </div>
+
+  <!-- 03 inversion -->
+  <section class="beat">
+    <div class="offset-r rise"><div class="tag">03 &middot; measurement</div><h2 class="title">The time-luck inversion</h2></div>
+    <p class="lede rise push" style="max-width:38ch;">The result is drawn from exploratory interviews with eight founders, comparing their reported time against the serendipity they perceived it returned: where they spent the most time returned the least serendipitous opportunities. And where they spent the least returned the most. 3 different perspectives:</p>
+    <div class="fold rise push">
+      <div class="fold-stage" id="stage-inv"></div>
+      <div class="fold-tabs" data-fold="inv">
+        <button class="fold-tab on" data-s="0">Context</button>
+        <button class="fold-tab" data-s="1">Mapped</button>
+        <button class="fold-tab" data-s="2">Meaning</button>
+      </div>
+    </div>
+    <p class="rise mono col-r" style="margin-top:28px;font-size:13px;color:var(--accent);text-align:right;">It shows where founders believe their time goes and what they credit, not why some environments pay off and others don&rsquo;t.</p>
+  </section>
+
+  <!-- 04 proximity: DARK + gridded -->
+  <section class="beat dark gridded">
+    <div class="dark-inner">
+    <div class="wide-l">
+      <p class="body rise" style="align-self:end;">The time-luck inversion looks like proof that you should get off the screen and into the room. But that is the wrong lesson. Decades of supporting research say so, with far more data than a handful of interviews.</p>
+      <div class="rise" style="text-align:right;"><div class="tag">04 &middot; formula correction</div><h2 class="title">Proximity is<br>not the<br>mechanism</h2></div>
+    </div>
+    <div class="fold rise push">
+      <div class="fold-stage" id="stage-lit"></div>
+      <div class="fold-tabs" data-fold="lit">
+        <button class="fold-tab on" data-s="0">The claim</button>
+        <button class="fold-tab" data-s="1">The evidence</button>
+        <button class="fold-tab" data-s="2">The mechanism</button>
+      </div>
+    </div>
+    <div class="push col-l rise"><div class="pull" style="color:var(--snowbound);">Events do not win because they are rooms. They win because they retain three properties that institutions used to supply and no longer do.</div></div>
+    </div>
+  </section>
+
+  <!-- PHOTO 2 solitude -->
+  <div class="photo rise">
+    <img src="img/contact.jpg" alt="Figures moving through an open concourse, some passing between others">
+    <div class="veil"></div><div class="grid-ov"></div>
+    <div class="crosshair" style="top:46%;left:34%;"></div>
+    <div class="crosshair" style="top:52%;left:58%;"></div>
+    <div class="ov ov-tl">fig. 02 &middot; position, not proximity</div>
+    <div class="ov-wrap"><div class="ov ov-cap">It was never about being near people. It was about being between them.</div><div class="ov ov-br"><div class="ov-metric" style="color:var(--electric-blue);">673</div></div><div class="ov-sub" style="color:var(--electric-blue);opacity:0.9;">managers &middot; same effort, but network position shaped the outcome</div></div>
+  </div>
+
+  <!-- 05 2.62 -->
+  <section class="beat">
+    <div class="rise"><div class="tag">05 &middot; what it returns</div></div>
+    <div class="mega">
+      <svg class="mega-fold" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+        <line x1="0" y1="200" x2="800" y2="200" stroke="#0411D9" stroke-width="0.5" opacity="0.3"/>
+        <line x1="300" y1="0" x2="300" y2="400" stroke="#0411D9" stroke-width="0.5" opacity="0.3" stroke-dasharray="4 4"/>
+        <polygon points="300,60 560,200 300,340 40,200" fill="none" stroke="#0411D9" stroke-width="0.5" opacity="0.4"/>
+      </svg>
+      <div class="mega-n rise">2.62</div>
+    </div>
+    <div class="mega-plain rise">
+      This is the luck that digital media returns: <b>2.62 out of 5</b>. It takes more of a founder&rsquo;s time than any other channel and scores the lowest of them all. Structured events, at less than half the hours, return 3.62. The most effort goes into the worst-returning place.
+    </div>
+    <div class="mega-plain rise" style="margin-top:3vh;">Why? Digital is always available and requires the least amount of effort. Always on, very low friction.</div>
+    <div class="mega-plain rise" style="margin-top:3vh;color:var(--accent);">This is not only a story about networking. It is one instance of a larger pattern the <a href="https://carson-mckee.github.io/post-industrial-school/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(4,17,217,0.4);">Post-Industrial School</a> tracks.</div>
+  </section>
+
+  <!-- 06 revised formula: gridded -->
+  <section class="beat gridded">
+    <div class="col-c rise" style="margin-bottom:6vh;"><div class="tag" style="text-align:center;">06 &middot; the revision</div><p class="lede">Put the missing variable back. Luck was never doing &times; telling. It was doing &times; telling &times; the environment you tell into.</p></div>
+    <div class="revformula rise drift2">L <span class="eq">=</span> D <span class="eq">&times;</span> T <span class="add">&times;</span> <span class="e">e</span></div>
+    <div class="rev-defs rise">
+      <span><b>D</b> doing</span>
+      <span><b>T</b> telling</span>
+      <span class="eh"><b style="color:var(--live);">e</b> environment</span>
+      <span><b>L</b> luck</span>
+    </div>
+    <p class="body rise col-c push" style="text-align:center;">Environment is the frame, the conditions of the space that telling happens inside of. Set <b style="color:var(--live);">e</b> near zero and no volume of doing or telling can recover any semblance of luck. Social and digital media are a low-e environment. That is the immediate observation but not the whole finding. This is a working model for thinking about the problem, not a proven law.</p>
+  </section>
+
+  <!-- 07 three tests -->
+  <section class="beat">
+    <div class="offset-r rise"><div class="tag">07 &middot; the framework</div><h2 class="title">Three tests for&nbsp;e</h2></div>
+    <p class="lede rise push col-l"><b style="color:var(--live);">e</b> is the environment your telling lands in. These three questions test any environment. Run any space you use against them to help determine where the luck leaks out of the cracks.</p>
+    <div class="tests">
+      <div class="test rise"><div class="tnum">i</div><div class="tname">Constraint</div><div class="tq">Is it bounded? A finite set of people or time.</div>
+        <svg class="tglyph" width="96" height="96" viewBox="0 0 96 96"><rect x="10" y="10" width="76" height="76" fill="none" stroke="#0411D9" stroke-width="1"/><rect x="28" y="28" width="40" height="40" fill="none" stroke="#0411D9" stroke-width="1"/></svg>
+      </div>
+      <div class="test rise"><div class="tnum">ii</div><div class="tname">Frame</div><div class="tq">Is there a shared task? A verb, not a noun. A reason to act together, not a topic to be near.</div>
+        <svg class="tglyph" width="96" height="96" viewBox="0 0 96 96"><line x1="48" y1="8" x2="48" y2="88" stroke="#0411D9" stroke-width="1"/><line x1="8" y1="48" x2="88" y2="48" stroke="#0411D9" stroke-width="1"/><circle cx="48" cy="48" r="18" fill="none" stroke="#0411D9" stroke-width="1"/></svg>
+      </div>
+      <div class="test rise"><div class="tnum">iii</div><div class="tname">Friction</div><div class="tq">Do encounters cost something to resolve? A commitment, a synchronous moment.</div>
+        <svg class="tglyph" width="96" height="96" viewBox="0 0 96 96"><path d="M12 84 L48 12 L84 84 Z" fill="none" stroke="#0411D9" stroke-width="1"/><line x1="30" y1="48" x2="66" y2="48" stroke="#0411D9" stroke-width="1" stroke-dasharray="3 3"/></svg>
+      </div>
+    </div>
+    <p class="body rise col-r push" style="text-align:right;">These three properties can be added to a space you already use: a Slack, a Discord, a group chat, a pitch night. You do not need to build anything. What matters is the design, not the tool. Tools change all the time. These principles do not.</p>
+  </section>
+
+  <!-- PHOTO 3 corridor -->
+  <div class="photo rise">
+    <img src="img/corridor.jpg" alt="A transit platform receding into distance, figures spread along it" style="object-position:center 45%;">
+    <div class="veil"></div><div class="grid-ov"></div>
+    <div class="crosshair" style="top:40%;left:74%;"></div>
+    <div class="ov ov-tl">fig. 03 &middot; architecture is a choice</div>
+    <div class="ov-wrap"><div class="ov ov-cap">A space has a shape. The shape decides what can happen in it.</div><div class="ov ov-br"><div class="ov-sub" style="color:var(--digital-mint);">constraint &middot; frame &middot; friction</div></div></div>
+  </div>
+
+  <!-- 08 seam -->
+  <section class="beat">
+    <div class="col-l rise"><div class="tag">08 &middot; the honesty layer</div><h2 class="title">Where the<br>evidence ends</h2></div>
+    <div class="ledger rise">
+      <div class="seam-row"><div class="seam-k">Supported</div><div class="seam-v">Proximity alone is not the mechanism. Multiple lines of prior research, with far larger samples, point to engineered collision instead.</div></div>
+      <div class="seam-row"><div class="seam-k">Inferred</div><div class="seam-v">That founders will not return to physical space. A revealed preference, not a stated one. Nobody said they preferred digital. They simply were there.</div></div>
+      <div class="seam-row"><div class="seam-k">Argued</div><div class="seam-v">That the three properties of constraint, frame and friction are the mechanism. They are portable. Rooms have them by accident. Digital spaces can have them by intent.</div></div>
+    </div>
+  </section>
+
+  <!-- CLOSE dark -->
+  <section class="close dark gridded">
+    <div class="dark-inner">
+    <div class="rise"><span class="mint-line">Digital is the default OS for business now, but startup culture still runs an industrial-era playbook on it. The opportunity is to design digital environments that actually fit how business happens now.</span></div>
+    <div class="split push">
+      <p class="body rise">What the industrial era institution used to hand you, you now have to build yourself. This is what building it looks like, in the one place everybody already spends their time: online.</p>
+      <p class="body rise">This is one reading of the current business environment. The <a href="https://carson-mckee.github.io/post-industrial-school/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(4,17,217,0.4);">Post-Industrial School</a> exists to read the rest, to name and shape a new model while it is still forming rather than after it has become standardized.</p>
+    </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    Luck Surface Area_Revised &middot; a visual essay<br>
+    By <a href="https://github.com/Carson-McKee" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(4,17,217,0.3);">Carson McKee</a> &middot; visual identity by <a href="https://www.behance.net/joynneji" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(4,17,217,0.3);">Joy Nneji</a>
+  </div>
+</div>
+<script>
+const rail=document.getElementById('rail');
+addEventListener('scroll',()=>{const h=document.documentElement;rail.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:0.1});
+document.querySelectorAll('.rise').forEach(el=>io.observe(el));
+const ULTRA='#0411D9', EBLUE='#0F9AFF';
+const envs=[
+  {n:'Social platforms',hrs:9.4,ser:2.62,hpct:100,spct:52,k:'over'},
+  {n:'Physical coworking',hrs:8.5,ser:3.25,hpct:90,spct:65},
+  {n:'Online communities',hrs:5.9,ser:2.00,hpct:63,spct:40},
+  {n:'Structured events',hrs:4.4,ser:3.62,hpct:47,spct:72,k:'under'},
+];
+function chart(){return envs.map(d=>{
+  const col=d.k==='over'?EBLUE:d.k==='under'?ULTRA:'rgba(29,31,33,0.4)';
+  return '<div class="env-row"><div class="env-name" style="'+(d.k?'color:'+col+';font-weight:500;':'')+'">'+d.n+'</div>'+
+    '<div class="env-track"><div class="env-fill" style="width:'+d.hpct+'%;background:'+col+';opacity:0.3;"></div>'+
+    '<div class="env-fill" style="width:'+d.spct+'%;background:'+col+';mix-blend-mode:multiply;"></div></div>'+
+    '<div class="env-val">'+d.hrs+'<span class="u">hrs</span></div>'+
+    '<div class="env-val" style="'+(d.k?'color:'+col+';':'')+'">'+d.ser.toFixed(2)+'<span class="u">luck</span></div></div>';}).join('');}
+const folds={
+  inv:[
+    ()=>'<div class="fold-eyebrow">The formula, restated</div>'+
+      '<div style="font-family:var(--display);font-size:clamp(38px,6vw,56px);font-weight:700;letter-spacing:-0.03em;margin-bottom:16px;">L = D \u00d7 T</div>'+
+      '<div style="font-size:15px;line-height:1.7;max-width:44ch;color:rgba(29,31,33,0.78);">Back to the formula. Every founder spoken to endorsed it and none of them dismissed it. Their insights pointed to a second variable and it is not a quantity.</div>'+
+      '<div style="margin-top:26px;font-family:var(--mono);font-size:11px;letter-spacing:0.1em;color:'+ULTRA+';">LEARN MORE \u2192 where the telling happens</div>',
+    ()=>'<div class="fold-eyebrow">Hours spent per month, and the luck each returns (out of 5)</div>'+'<div class="env-head"><div>environment</div><div></div><div class="h-num">time</div><div class="h-num">luck</div></div>'+chart()+'<div class="legend"><span><span class="chip" style="background:'+EBLUE+';opacity:0.35;"></span>hours per month</span>'+'<span><span class="chip" style="background:'+ULTRA+';"></span>luck returned, out of 5</span></div>'+'<div style="margin-top:18px;font-size:14px;line-height:1.6;max-width:48ch;color:rgba(29,31,33,0.85);">Events take less than half the time of digital (4.4 hours against 9.4) and return more luck (3.62 against 2.62). The most time goes to the environment that pays the least.</div>',
+    ()=>'<div class="fold-eyebrow">What the pattern means</div>'+
+      '<div style="font-family:var(--display);font-weight:700;font-size:clamp(24px,3.4vw,38px);line-height:1.12;letter-spacing:-0.03em;max-width:22ch;margin-bottom:20px;">Effort was never the problem. <span style="color:'+ULTRA+';">Where to apply effort was.</span></div>'+
+      '<div style="font-size:15px;line-height:1.7;max-width:46ch;color:rgba(29,31,33,0.82);margin-bottom:16px;">The formula assumed that telling was a quantity. It isn\u2019t. Telling is an environment and environments are not equal. Put the same effort into the wrong environment and luck will not simply follow.</div>'+
+      '<div style="font-family:var(--mono);font-size:12px;letter-spacing:0.08em;color:'+ULTRA+';border-top:0.5px solid rgba(4,17,217,0.25);padding-top:14px;">SO WHY DOES ONE ENVIRONMENT PAY VS ANOTHER? \u2193</div>'
+  ],
+  lit:[
+    ()=>'<div class="fold-eyebrow">The claim</div>'+
+      '<div style="font-family:var(--display);font-size:clamp(24px,3.4vw,34px);font-weight:700;letter-spacing:-0.03em;line-height:1.15;max-width:20ch;color:var(--ink);">Proximity does not produce encounter.</div>'+
+      '<div style="margin-top:22px;font-size:15px;line-height:1.7;max-width:44ch;color:rgba(29,31,33,0.78);">The serendipity accelerator claim made for coworking is theoretical. The evidence that being near people drives productive encounter is weak.</div>',
+    ()=>{var items=[['70%','When companies switched to open-plan offices, face-to-face interaction dropped by 70%. People emailed the person beside them instead of turning to talk.'],['3%','Only 3% of workplace interactions happen in the shared spaces that collaboration-by-design was meant to activate.'],['27%','Physical proximity had no measurable effect on how connected people felt. Emotional proximity, trust and shared purpose, raised it 27%.'],['20M','Across 20 million LinkedIn users tracked over five years, weak ties drove the most opportunity and did so most powerfully in digital-first industries.']];
+      return '<div class="fold-eyebrow">Four separate research findings</div><div style="display:grid;gap:16px;">'+items.map(function(it){return '<div style="display:grid;grid-template-columns:80px 1fr;gap:16px;align-items:baseline;border-top:0.5px solid rgba(29,31,33,0.2);padding-top:11px;"><div style="font-family:var(--display);font-weight:700;font-size:26px;color:'+ULTRA+';letter-spacing:-0.02em;">'+it[0]+'</div><div style="font-size:14px;line-height:1.5;color:rgba(29,31,33,0.8);">'+it[1]+'</div></div>';}).join('')+'</div>';},
+    ()=>'<div class="fold-eyebrow">The mechanism</div>'+
+      '<div style="font-family:var(--display);font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.2;max-width:24ch;margin-bottom:18px;">What creates a lucky encounter is not being near people, but being positioned between them.</div>'+
+      '<div style="font-size:15px;line-height:1.7;max-width:48ch;color:rgba(29,31,33,0.82);margin-bottom:14px;">In 2004, sociologist Ronald Burt studied 673 managers and mapped that value came down to who sat between disconnected groups, as they could see information sooner and from different sides. The advantage was structural: being between, not near.</div>'+
+      '<div style="font-size:15px;line-height:1.7;max-width:48ch;color:var(--ink);font-weight:500;">Luck is not about doing or telling more. It is about your relative position. Digital places you in the middle of a crowd with no edges, all facing the same way. There is no structure. This is layering a 20th century industrial era model into a 21st century digital environment.</div>'
+  ]
+};
+function mount(key){
+  const stage=document.getElementById('stage-'+key), tabs=document.querySelector('[data-fold="'+key+'"]');
+  function render(i){stage.innerHTML='<div class="fold-panel">'+folds[key][i]()+'</div>';
+    tabs.querySelectorAll('.fold-tab').forEach((t,j)=>t.classList.toggle('on',j===i));}
+  tabs.querySelectorAll('.fold-tab').forEach(t=>t.addEventListener('click',()=>render(+t.dataset.s)));
+  render(0);
+}
+mount('inv'); mount('lit');
+</script>
+</body>
+</html>
