@@ -93,6 +93,14 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .strain{animation:strain 5s steps(1,end) infinite;transform-origin:center center;will-change:transform;}
 @media (prefers-reduced-motion:reduce){.strain{animation:none!important;}}
 
+/* typed formula: 80s terminal */
+.hero-formula.typer{font-family:var(--mono);font-weight:500;letter-spacing:0;white-space:pre;min-height:1em;}
+.typer .op{color:var(--live);}
+.typer .caret{display:inline-block;width:0.55em;height:0.82em;margin-left:0.04em;vertical-align:-0.06em;background:var(--live);animation:blink 1.06s steps(1,end) infinite;}
+.typer.busy .caret{animation:none;}
+@keyframes blink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+@media (prefers-reduced-motion:reduce){.typer .caret{animation:none;opacity:0;}}
+
 /* HERO: title leads, then formula */
 .hero-photo{position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;width:100vw;max-width:100vw;height:clamp(440px,82vh,860px);overflow:hidden;background:var(--stygian);}
 .hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 45%;filter:saturate(0) contrast(1.05);}
@@ -294,7 +302,7 @@ section.dark .fold-stage{color:var(--ink);}
   </div>
 
   <header class="hero">
-    <div class="hero-formula rise strain">L <span class="eq breaker"><span class="g-eq">=</span><span class="g-neq">&ne;</span></span> D <span class="eq">&times;</span> T</div>
+    <div class="hero-formula typer" role="img" aria-label="L &ne; D &times; T"><span class="tw" aria-hidden="true"></span><span class="caret" aria-hidden="true"></span></div>
     <div class="hero-legend rise">
       <span><b>L</b> luck</span>
       <span><b>D</b> doing, what you make</span>
@@ -310,9 +318,9 @@ section.dark .fold-stage{color:var(--ink);}
     <p class="rise">Jason Roberts, an entrepreneur and blogger, <a class="inline-link" href="https://www.codusoperandi.com/posts/increasing-your-luck-surface-area" target="_blank" rel="noopener">made this formula infamous in 2010</a>. It has become foundational in startup culture ever since. It is also incomplete.</p>
     <p class="rise">He argued that luck is not fixed. Luck scales. The serendipity in your life is proportional to doing something you are genuinely passionate about, multiplied by the number of people who come to know about it. That makes sense. He formalized it as L = D &times; T.</p>
     <p class="rise formula-gloss">Luck = Doing &times; Telling.</p>
-    <p class="rise">The idea stuck. 15 years later and it is startup canon: repeated in accelerators, pitches and onboarding decks. It lasts because it is simple and actionable. It rewards effort. Work harder in public and luck will find you.</p>
-    <p class="rise">That is exactly why it is worth revising. A formula this widespread stops being examined. It&rsquo;s assumed.</p>
-    <p class="rise">In 15 years, considering all that has happened in business and technology, it has been repeated far more often than it has been interrogated.</p>
+    <p class="rise">The idea stuck. 15 years later and it is startup canon, repeated in accelerators and pitches. It lasts because it is simple and actionable. It rewards effort. Work harder in public and luck will find you.</p>
+    <p class="rise">That is exactly why it is worth revising. A formula this widespread is assumed. But things change and it deserves to be examined.</p>
+    <p class="rise">In 15+ years, considering all that has happened in business and technology, it has been repeated far more often than it has been investigated.</p>
   </section>
 
   <!-- 01 flaw -->
@@ -321,8 +329,8 @@ section.dark .fold-stage{color:var(--ink);}
       <div class="rise"><div class="tag">01 &middot; the assumption</div><h2 class="title">The flaw is in the Telling&nbsp;(T)</h2></div>
       <div>
         <p class="body rise">The formula thinks of telling as volume. More people &rarr; more surface &rarr; more luck. It assumes every channel you tell through is the same channel, where the only difference between them is the amount of reach.</p>
-        <p class="body rise">That is an assumption that fails. Telling is not a quantity. It is an environment.</p>
-        <p class="body rise">The same effort, spent in one place rather than another, returns wildly different luck. There is a second variable hiding inside Roberts&rsquo; formula that nobody has measured. That is the insight I am looking for. Naming it changes the investigation: not a practical fix you apply for a better outcome, but a structural one, how you rebuild a business model for 21st-century reality instead of running a 20th-century model on digital.</p>
+        <p class="body rise">That assumption fails. Telling is not a quantity. It is an environment.</p>
+        <p class="body rise">There is a second layer here inside Roberts&rsquo; formula that is the insight I am looking for. Not a practical fix, like a list of actions you do or apply for a better outcome, but a structural one, how you rebuild a business model for 21st-century reality. We are instead running a 20th-century model on digital today.</p>
       </div>
     </div>
     <div class="push col-r rise"><div class="pull pull-emph"><span class="emph-where">Where</span> you tell <span class="emph-beats">beats</span> <span class="emph-how">how much</span> you tell.</div></div>
@@ -332,8 +340,8 @@ section.dark .fold-stage{color:var(--ink);}
   <section class="beat gridded">
     <div class="col-l rise"><div class="tag">02 &middot; vacancy</div><h2 class="title">Serendipity</h2></div>
     <div class="split push">
-      <p class="body rise">Serendipity is a useful accident. In the startup space, it is the kind of encounter you didn&rsquo;t plan that changes what might happen next. A chance encounter that results in a referral or an employee. A possible client. It feels like luck.</p>
-      <p class="body rise">Serendipity used to be free-range. Its existence was a byproduct of the industrial era. The firm that you worked in located you in a building, assigned you on a team, funded your conferences and gave you a title that told other people how to relate to you. You never needed to create serendipitous conditions. Institutions and businesses did. This structure has been dissolving in the post-industrial reality of remote work and distributed teams.</p>
+      <p class="body rise">Serendipity is a useful accident. In the startup space, it is the kind of encounter you didn&rsquo;t plan that changes what might happen next. A chance encounter that results in a referral. A possible client. It feels like luck.</p>
+      <p class="body rise">Serendipity used to be free-range. Its existence was a byproduct of the industrial era. The firm that you worked in put you in a building, assigned you on a team, paid for your conferences and gave you a title that told other people how to relate to you. You never needed to create serendipitous conditions. Institutions and businesses did. This structure has been dissolving in the post-industrial reality of remote work and distributed teams.</p>
     </div>
     <div class="symptoms-head rise">
       <div class="tag">The symptoms of its absence</div>
@@ -341,7 +349,7 @@ section.dark .fold-stage{color:var(--ink);}
     </div>
     <div class="symptoms rise">
       <div class="symptom">
-        <div class="sidx">i</div><div class="sname">Vacated encounter</div>
+        <div class="sidx">i</div><div class="sname">There is a vacated encounter</div>
         <div class="sdesc">The collisions and encounters that a workplace used to stage no longer happen on their own. This is a structural issue, not an organizational or company culture failure.</div>
         <svg class="sglyph" width="64" height="24" viewBox="0 0 64 24"><line x1="0" y1="12" x2="27" y2="12" stroke="#0411D9" stroke-width="1"/><line x1="37" y1="12" x2="64" y2="12" stroke="#0411D9" stroke-width="1" stroke-dasharray="3 3"/><circle cx="32" cy="12" r="3.5" fill="none" stroke="#0411D9"/></svg>
       </div>
@@ -351,7 +359,7 @@ section.dark .fold-stage{color:var(--ink);}
         <svg class="sglyph" width="64" height="24" viewBox="0 0 64 24"><path d="M0 5 H64 M0 12 H64 M0 19 H64" stroke="#0F9AFF" stroke-width="1"/></svg>
       </div>
       <div class="symptom">
-        <div class="sidx">iii</div><div class="sname">Networking unpracticed</div>
+        <div class="sidx">iii</div><div class="sname">Nobody really likes networking and honestly doesn&rsquo;t know how to do it</div>
         <div class="sdesc">Networking becomes an assumed but untaught skill that assumes the role of a business connection environment to enable serendipitous encounters. But the capacity was never developed, producing reduced benefits and results. The always available channels replaced serendipity with a constant stream of unwanted pitches.</div>
         <svg class="sglyph" width="64" height="24" viewBox="0 0 64 24"><path d="M2 20 Q18 2 32 12 T62 7" fill="none" stroke="#0411D9" stroke-width="1"/></svg>
       </div>
@@ -365,7 +373,7 @@ section.dark .fold-stage{color:var(--ink);}
     <div class="crosshair" style="top:34%;left:28%;"></div>
     <div class="crosshair" style="top:58%;left:66%;"></div>
     <div class="ov ov-tl">fig. 01 &middot; ambient presence, no encounter</div>
-    <div class="ov-wrap"><div class="ov ov-cap">Being around people is not the same as meeting them.</div><div class="ov ov-br"><div class="ov-metric" style="color:var(--electric-blue);">9.4</div></div><div class="ov-sub">hours per month in social / digital media</div></div>
+    <div class="ov-wrap"><div class="ov ov-cap">Being around people is not the same as meeting them.</div><div class="ov ov-br"><div class="ov-metric" style="color:var(--electric-blue);">9.4</div></div><div class="ov-sub">hours that founders spent per month in social / digital media</div></div>
   </div>
 
   <!-- 03 inversion -->
@@ -376,7 +384,7 @@ section.dark .fold-stage{color:var(--ink);}
       <div class="fold-stage" id="stage-inv"></div>
       <div class="fold-tabs" data-fold="inv">
         <button class="fold-tab on" data-s="0">Context</button>
-        <button class="fold-tab" data-s="1">Mapped</button>
+        <button class="fold-tab" data-s="1">Stats</button>
         <button class="fold-tab" data-s="2">Meaning</button>
       </div>
     </div>
@@ -393,9 +401,9 @@ section.dark .fold-stage{color:var(--ink);}
     <div class="fold rise push">
       <div class="fold-stage" id="stage-lit"></div>
       <div class="fold-tabs" data-fold="lit">
-        <button class="fold-tab on" data-s="0">The claim</button>
-        <button class="fold-tab" data-s="1">The evidence</button>
-        <button class="fold-tab" data-s="2">The mechanism</button>
+        <button class="fold-tab on" data-s="0">Claim</button>
+        <button class="fold-tab" data-s="1">Stats</button>
+        <button class="fold-tab" data-s="2">How it works</button>
       </div>
     </div>
     <div class="push col-l rise"><div class="pull" style="color:var(--snowbound);">Events do not win because they are rooms. They win because they retain three properties that institutions used to supply and no longer do.</div></div>
@@ -409,7 +417,7 @@ section.dark .fold-stage{color:var(--ink);}
     <div class="crosshair" style="top:46%;left:34%;"></div>
     <div class="crosshair" style="top:52%;left:58%;"></div>
     <div class="ov ov-tl">fig. 02 &middot; position, not proximity</div>
-    <div class="ov-wrap"><div class="ov ov-cap">It was never about being near people. It was about being between them.</div><div class="ov ov-br"><div class="ov-metric" style="color:var(--electric-blue);">673</div></div><div class="ov-sub" style="color:var(--electric-blue);opacity:0.9;">managers &middot; same effort, but network position shaped the outcome</div></div>
+    <div class="ov-wrap"><div class="ov ov-cap">It was never about being near people. It was about being between them.</div></div>
   </div>
 
   <!-- 05 2.62 -->
@@ -426,7 +434,7 @@ section.dark .fold-stage{color:var(--ink);}
     <div class="mega-plain rise">
       This is the luck that digital media returns: <b>2.62 out of 5</b>. It takes more of a founder&rsquo;s time than any other channel and scores the lowest of them all. Structured events, at less than half the hours, return 3.62. The most effort goes into the worst-returning place.
     </div>
-    <div class="mega-plain rise" style="margin-top:3vh;">Why? Digital is always available and requires the least amount of effort. Always on, very low friction.</div>
+    <div class="mega-plain rise" style="margin-top:3vh;">Why? Digital is always available and requires the least amount of effort. Always on. The quality drops dramatically.</div>
     <div class="mega-plain rise" style="margin-top:3vh;color:var(--accent);">This is not only a story about networking. It is one instance of a larger pattern the <a href="https://carson-mckee.github.io/post-industrial-school/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(4,17,217,0.4);">Post-Industrial School</a> tracks.</div>
   </section>
 
@@ -451,10 +459,10 @@ section.dark .fold-stage{color:var(--ink);}
       <div class="test rise"><div class="tnum">i</div><div class="tname">Constraint</div><div class="tq">Is it bounded? A finite set of people or time.</div>
         <svg class="tglyph" width="96" height="96" viewBox="0 0 96 96"><rect x="10" y="10" width="76" height="76" fill="none" stroke="#0411D9" stroke-width="1"/><rect x="28" y="28" width="40" height="40" fill="none" stroke="#0411D9" stroke-width="1"/></svg>
       </div>
-      <div class="test rise"><div class="tnum">ii</div><div class="tname">Frame</div><div class="tq">Is there a shared task? A verb, not a noun. A reason to act together, not a topic to be near.</div>
+      <div class="test rise"><div class="tnum">ii</div><div class="tname">Frame</div><div class="tq">Is there a shared task? A verb. A reason to act together.</div>
         <svg class="tglyph" width="96" height="96" viewBox="0 0 96 96"><line x1="48" y1="8" x2="48" y2="88" stroke="#0411D9" stroke-width="1"/><line x1="8" y1="48" x2="88" y2="48" stroke="#0411D9" stroke-width="1"/><circle cx="48" cy="48" r="18" fill="none" stroke="#0411D9" stroke-width="1"/></svg>
       </div>
-      <div class="test rise"><div class="tnum">iii</div><div class="tname">Friction</div><div class="tq">Do encounters cost something to resolve? A commitment, a synchronous moment.</div>
+      <div class="test rise"><div class="tnum">iii</div><div class="tname">Friction</div><div class="tq">Do encounters facilitate a commitment, a synchronous moment?</div>
         <svg class="tglyph" width="96" height="96" viewBox="0 0 96 96"><path d="M12 84 L48 12 L84 84 Z" fill="none" stroke="#0411D9" stroke-width="1"/><line x1="30" y1="48" x2="66" y2="48" stroke="#0411D9" stroke-width="1" stroke-dasharray="3 3"/></svg>
       </div>
     </div>
@@ -472,11 +480,11 @@ section.dark .fold-stage{color:var(--ink);}
 
   <!-- 08 seam -->
   <section class="beat">
-    <div class="col-l rise"><div class="tag">08 &middot; the honesty layer</div><h2 class="title">Where the<br>evidence ends</h2></div>
+    <div class="col-l rise"><div class="tag">08 &middot; the honesty layer</div><h2 class="title">Summary</h2></div>
     <div class="ledger rise">
       <div class="seam-row"><div class="seam-k">Supported</div><div class="seam-v">Proximity alone is not the mechanism. Multiple lines of prior research, with far larger samples, point to engineered collision instead.</div></div>
-      <div class="seam-row"><div class="seam-k">Inferred</div><div class="seam-v">That founders will not return to physical space. A revealed preference, not a stated one. Nobody said they preferred digital. They simply were there.</div></div>
-      <div class="seam-row"><div class="seam-k">Argued</div><div class="seam-v">That the three properties of constraint, frame and friction are the mechanism. They are portable. Rooms have them by accident. Digital spaces can have them by intent.</div></div>
+      <div class="seam-row"><div class="seam-k">Inferred</div><div class="seam-v">That founders have a revealed preference, not a stated one. Nobody said they preferred digital. They were just simply there.</div></div>
+      <div class="seam-row"><div class="seam-k">Argued</div><div class="seam-v">That the three properties of constraint, frame and friction are the criteria and they are portable. Rooms have them by accident. Digital spaces can have them by intent.</div></div>
     </div>
   </section>
 
@@ -497,6 +505,31 @@ section.dark .fold-stage{color:var(--ink);}
   </div>
 </div>
 <script>
+(function(){
+  const box=document.querySelector('.typer'); if(!box) return;
+  const out=box.querySelector('.tw');
+  const OPS={'=':1,'\u2260':1,'\u00d7':1};
+  let buf='';
+  const paint=()=>{out.innerHTML=buf.split('').map(c=>OPS[c]?'<span class="op">'+c+'</span>':c).join('');};
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  const type=async t=>{for(const c of t){buf+=c;paint();await wait(c===' '?70:95+Math.random()*90);}};
+  const back=async(n,ms)=>{for(let i=0;i<n;i++){buf=buf.slice(0,-1);paint();await wait(ms);}};
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){buf='L \u2260 D \u00d7 T';paint();return;}
+  (async function loop(){
+    await wait(700);
+    for(;;){
+      box.classList.add('busy');
+      await type('L =');
+      box.classList.remove('busy'); await wait(650); box.classList.add('busy');
+      await back(2,170);
+      await wait(250);
+      await type(' \u2260 D \u00d7 T');
+      box.classList.remove('busy'); await wait(3600); box.classList.add('busy');
+      await back(buf.length,45);
+      box.classList.remove('busy'); await wait(900);
+    }
+  })();
+})();
 const rail=document.getElementById('rail');
 addEventListener('scroll',()=>{const h=document.documentElement;rail.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
 const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:0.1});
@@ -528,12 +561,12 @@ const folds={
       '<div style="font-family:var(--mono);font-size:12px;letter-spacing:0.08em;color:'+ULTRA+';border-top:0.5px solid rgba(4,17,217,0.25);padding-top:14px;">SO WHY DOES ONE ENVIRONMENT PAY VS ANOTHER? \u2193</div>'
   ],
   lit:[
-    ()=>'<div class="fold-eyebrow">The claim</div>'+
+    ()=>'<div class="fold-eyebrow">Claim</div>'+
       '<div style="font-family:var(--display);font-size:clamp(24px,3.4vw,34px);font-weight:700;letter-spacing:-0.03em;line-height:1.15;max-width:20ch;color:var(--ink);">Proximity does not produce encounter.</div>'+
       '<div style="margin-top:22px;font-size:15px;line-height:1.7;max-width:44ch;color:rgba(29,31,33,0.78);">The serendipity accelerator claim made for coworking is theoretical. The evidence that being near people drives productive encounter is weak.</div>',
     ()=>{var items=[['70%','When companies switched to open-plan offices, face-to-face interaction dropped by 70%. People emailed the person beside them instead of turning to talk.'],['3%','Only 3% of workplace interactions happen in the shared spaces that collaboration-by-design was meant to activate.'],['27%','Physical proximity had no measurable effect on how connected people felt. Emotional proximity, trust and shared purpose, raised it 27%.'],['20M','Across 20 million LinkedIn users tracked over five years, weak ties drove the most opportunity and did so most powerfully in digital-first industries.']];
-      return '<div class="fold-eyebrow">Four separate research findings</div><div style="display:grid;gap:16px;">'+items.map(function(it){return '<div style="display:grid;grid-template-columns:80px 1fr;gap:16px;align-items:baseline;border-top:0.5px solid rgba(29,31,33,0.2);padding-top:11px;"><div style="font-family:var(--display);font-weight:700;font-size:26px;color:'+ULTRA+';letter-spacing:-0.02em;">'+it[0]+'</div><div style="font-size:14px;line-height:1.5;color:rgba(29,31,33,0.8);">'+it[1]+'</div></div>';}).join('')+'</div>';},
-    ()=>'<div class="fold-eyebrow">The mechanism</div>'+
+      return '<div class="fold-eyebrow">Stats</div><div style="display:grid;gap:16px;">'+items.map(function(it){return '<div style="display:grid;grid-template-columns:80px 1fr;gap:16px;align-items:baseline;border-top:0.5px solid rgba(29,31,33,0.2);padding-top:11px;"><div style="font-family:var(--display);font-weight:700;font-size:26px;color:'+ULTRA+';letter-spacing:-0.02em;">'+it[0]+'</div><div style="font-size:14px;line-height:1.5;color:rgba(29,31,33,0.8);">'+it[1]+'</div></div>';}).join('')+'</div>';},
+    ()=>'<div class="fold-eyebrow">How it works</div>'+
       '<div style="font-family:var(--display);font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.2;max-width:24ch;margin-bottom:18px;">What creates a lucky encounter is not being near people, but being positioned between them.</div>'+
       '<div style="font-size:15px;line-height:1.7;max-width:48ch;color:rgba(29,31,33,0.82);margin-bottom:14px;">In 2004, sociologist Ronald Burt studied 673 managers and mapped that value came down to who sat between disconnected groups, as they could see information sooner and from different sides. The advantage was structural: being between, not near.</div>'+
       '<div style="font-size:15px;line-height:1.7;max-width:48ch;color:var(--ink);font-weight:500;">Luck is not about doing or telling more. It is about your relative position. Digital places you in the middle of a crowd with no edges, all facing the same way. There is no structure. This is layering a 20th century industrial era model into a 21st century digital environment.</div>'
