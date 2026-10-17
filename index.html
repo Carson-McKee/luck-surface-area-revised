@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Luck Surface Area_Revised</title>
+<meta name="description" content="A research output of the Post-Industrial School. The startup formula for luck is incomplete. Where you tell beats how much you tell.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Luck Surface Area_Revised">
+<meta property="og:description" content="A research output of the Post-Industrial School. The startup formula for luck is incomplete. Where you tell beats how much you tell.">
+<meta property="og:url" content="https://carson-mckee.github.io/luck-surface-area-revised/">
+<meta property="og:image" content="https://carson-mckee.github.io/luck-surface-area-revised/corridor.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://carson-mckee.github.io/luck-surface-area-revised/corridor.jpg">
 <style>
 @font-face{font-family:"TeX Gyre Heros";src:url("texgyreheros-regular.woff") format("woff");font-weight:400;font-display:swap;}
 @font-face{font-family:"TeX Gyre Heros";src:url("texgyreheros-bold.woff") format("woff");font-weight:700;font-display:swap;}
@@ -86,14 +94,19 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 @media (prefers-reduced-motion:reduce){.strain{animation:none!important;}}
 
 /* HERO: title leads, then formula */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding:10vh 0;}
-.hero-title{font-family:var(--display);font-weight:700;letter-spacing:-0.04em;line-height:0.92;font-size:clamp(48px,10vw,132px);color:var(--ink);}
-.hero-title .rev{display:block;color:var(--ink);}
-.hero-formula{font-family:var(--display);font-weight:700;letter-spacing:-0.03em;line-height:1;font-size:clamp(40px,8vw,104px);margin-top:8vh;color:var(--ink);}
+.hero-photo{position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;width:100vw;max-width:100vw;height:clamp(440px,82vh,860px);overflow:hidden;background:var(--stygian);}
+.hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 45%;filter:saturate(0) contrast(1.05);}
+.hero-photo .veil{position:absolute;inset:0;background:linear-gradient(to top,rgba(29,31,33,0.78) 0%,rgba(29,31,33,0.25) 55%,rgba(29,31,33,0.45) 100%);}
+.hero-photo .grid-ov{position:absolute;inset:0;pointer-events:none;opacity:0.45;background-image:linear-gradient(rgba(235,244,251,0.12) 0.5px,transparent 0.5px),linear-gradient(90deg,rgba(235,244,251,0.12) 0.5px,transparent 0.5px);background-size:64px 64px;}
+.hero-photo .ov-tl{position:absolute;z-index:3;top:26px;left:clamp(20px,5vw,64px);font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--digital-mint);}
+.hero-photo .hero-inner{position:absolute;z-index:3;left:0;right:0;bottom:clamp(28px,6vh,64px);}
+.hero-title{font-family:var(--display);font-weight:700;letter-spacing:-0.04em;line-height:0.92;font-size:clamp(44px,12vw,132px);color:var(--snowbound);}
+.hero{position:relative;padding:12vh 0 4vh;}
+.hero-formula{font-family:var(--display);font-weight:700;letter-spacing:-0.03em;line-height:1;font-size:clamp(40px,8vw,104px);color:var(--ink);}
 .hero-formula .eq{color:var(--live);}
 .hero-legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:36px;font-family:var(--mono);font-size:13px;letter-spacing:0.02em;color:rgba(29,31,33,0.7);}
 .hero-legend b{color:var(--accent);font-weight:500;}
-.hero-intro{margin-top:28px;max-width:44ch;font-size:clamp(15px,1.5vw,17px);line-height:1.5;color:rgba(29,31,33,0.7);}
+.hero-intro{margin-top:28px;max-width:44ch;font-size:18px;line-height:30px;color:rgba(29,31,33,0.78);}
 .hero-flaw{margin-top:7vh;max-width:30ch;font-size:clamp(22px,2.6vw,34px);line-height:1.18;letter-spacing:-0.03em;}
 .hero-flaw .strike{text-decoration:line-through;text-decoration-color:var(--live);text-decoration-thickness:3px;opacity:0.5;}
 
@@ -101,11 +114,11 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 section.beat{padding:18vh 0;position:relative;}
 .tag{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:22px;}
 .title{font-family:var(--display);font-weight:700;line-height:0.98;letter-spacing:-0.04em;font-size:clamp(32px,5.4vw,68px);}
-.lede{font-size:clamp(20px,2.2vw,26px);line-height:1.4;letter-spacing:-0.02em;}
+.lede{font-size:18px;line-height:30px;}
 p.body{font-size:18px;line-height:30px;margin-bottom:24px;}
-.pull-emph{color:rgba(29,31,33,0.5);}
-.pull-emph .emph-where{color:var(--accent);font-size:1.25em;letter-spacing:-0.05em;}
-.pull-emph .emph-beats{color:var(--live);}
+.pull-emph{color:var(--ink);}
+.pull-emph .emph-where,.pull-emph .emph-how{color:var(--accent);}
+.pull-emph .emph-beats{font-style:italic;}
 .pull{font-family:var(--display);font-weight:700;line-height:1.06;letter-spacing:-0.04em;font-size:clamp(26px,4vw,52px);}
 
 /* layout: asymmetry pulled in ~15% */
@@ -158,7 +171,7 @@ section.dark .title{color:var(--snowbound);}
 .symptom:hover{background:var(--aspen);}
 .symptom .sidx{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:0.1em;}
 .symptom .sname{font-family:var(--display);font-weight:700;font-size:24px;letter-spacing:-0.02em;margin:16px 0 12px;}
-.symptom .sdesc{font-size:14px;line-height:22px;color:rgba(29,31,33,0.78);}
+.symptom .sdesc{font-size:15px;line-height:24px;color:rgba(29,31,33,0.78);}
 .symptom .sglyph{margin-top:auto;padding-top:20px;transition:transform .5s;}
 .symptom:hover .sglyph{transform:translateX(6px);}
 
@@ -196,7 +209,7 @@ section.dark .fold-stage{color:var(--ink);}
 .mega{position:relative;padding:4vh 0;}
 .mega-n{font-family:var(--display);font-weight:700;font-size:clamp(120px,32vw,420px);line-height:0.74;color:var(--over);letter-spacing:-0.05em;position:relative;z-index:2;text-align:right;}
 .mega-fold{position:absolute;top:50%;left:0;transform:translateY(-50%);z-index:1;pointer-events:none;width:64%;height:auto;}
-.mega-plain{max-width:40ch;margin-top:4vh;font-size:clamp(20px,2.4vw,28px);line-height:1.35;letter-spacing:-0.02em;}
+.mega-plain{max-width:52ch;margin-top:4vh;font-size:18px;line-height:30px;}
 .mega-plain b{color:var(--over);font-weight:700;}
 
 /* tests: hover reveal */
@@ -205,7 +218,7 @@ section.dark .fold-stage{color:var(--ink);}
 .test:hover{background:#e2ecf6;}
 .test .tnum{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:0.1em;}
 .test .tname{font-family:var(--display);font-weight:700;font-size:28px;margin:14px 0 12px;letter-spacing:-0.02em;}
-.test .tq{font-size:15px;line-height:23px;color:rgba(29,31,33,0.8);}
+.test .tq{font-size:15px;line-height:24px;color:rgba(29,31,33,0.8);}
 .test .tglyph{position:absolute;bottom:-22px;right:-22px;opacity:0.14;transition:opacity .5s,transform .6s;}
 .test:hover .tglyph{opacity:0.28;transform:rotate(6deg);}
 
@@ -222,7 +235,7 @@ section.dark .fold-stage{color:var(--ink);}
 .seam-row{display:grid;grid-template-columns:160px 1fr;gap:32px;padding:24px 0;border-bottom:0.5px solid var(--hair);align-items:baseline;transition:padding-left .35s;}
 .seam-row:hover{padding-left:10px;}
 .seam-k{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);}
-.seam-v{font-size:16px;line-height:25px;max-width:58ch;}
+.seam-v{font-size:18px;line-height:30px;max-width:58ch;}
 .seam-row:last-child .seam-k{color:var(--ink);font-weight:500;}
 
 /* close */
@@ -244,6 +257,7 @@ section.dark .fold-stage{color:var(--ink);}
   .revwrap,.beat.gridded{overflow:hidden;}
 
   body{font-size:16px;line-height:26px;}
+  p.body,.lede,.mega-plain,.hero-intro,.seam-v,.interstitial p{font-size:16px;line-height:26px;}
   .symptoms,.tests,.poles,.split,.wide-r,.wide-l{grid-template-columns:1fr;}
   .symptom{border-right:0;border-bottom:0.5px solid var(--hair);min-height:0;}
   .symptom:last-child{border-bottom:0;}
@@ -257,9 +271,9 @@ section.dark .fold-stage{color:var(--ink);}
 }
 
 /* roberts interstitial */
-.interstitial{padding:12vh 0 4vh;max-width:60ch;}
+.interstitial{padding:8vh 0 4vh;max-width:60ch;}
 .interstitial .kick{font-family:var(--mono);font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:24px;}
-.interstitial p{font-size:clamp(18px,1.9vw,21px);line-height:1.6;margin-bottom:20px;color:rgba(29,31,33,0.88);}
+.interstitial p{font-size:18px;line-height:30px;margin-bottom:24px;color:var(--ink);}
 .interstitial .inline-link{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(4,17,217,0.35);transition:border-color .3s;}
 .interstitial .inline-link:hover{border-color:var(--accent);}
 .interstitial .formula-gloss{font-family:var(--mono);font-size:14px;letter-spacing:0.02em;color:var(--accent);margin-top:-6px;}
@@ -272,8 +286,14 @@ section.dark .fold-stage{color:var(--ink);}
 <div class="stage">
 
   <!-- HERO: title first, then formula -->
+  <div class="hero-photo">
+    <img src="corridor.jpg" alt="A transit platform receding into distance, figures spread along it">
+    <div class="veil"></div><div class="grid-ov"></div>
+    <div class="ov-tl">LSA_V.01.01 &middot; Post-Industrial School &middot; Research Output 01</div>
+    <div class="hero-inner"><div class="stage"><h1 class="hero-title">Luck Surface<br>Area_Revised</h1></div></div>
+  </div>
+
   <header class="hero">
-    <h1 class="hero-title rise">Luck Surface<br>Area<span class="rev">_Revised</span></h1>
     <div class="hero-formula rise strain">L <span class="eq breaker"><span class="g-eq">=</span><span class="g-neq">&ne;</span></span> D <span class="eq">&times;</span> T</div>
     <div class="hero-legend rise">
       <span><b>L</b> luck</span>
@@ -305,7 +325,7 @@ section.dark .fold-stage{color:var(--ink);}
         <p class="body rise">The same effort, spent in one place rather than another, returns wildly different luck. There is a second variable hiding inside Roberts&rsquo; formula that nobody has measured. That is the insight I am looking for. Naming it changes the investigation: not a practical fix you apply for a better outcome, but a structural one, how you rebuild a business model for 21st-century reality instead of running a 20th-century model on digital.</p>
       </div>
     </div>
-    <div class="push col-r rise"><div class="pull pull-emph"><span class="emph-where">Where</span> you tell <span class="emph-beats">beats how much</span> you tell.</div></div>
+    <div class="push col-r rise"><div class="pull pull-emph"><span class="emph-where">Where</span> you tell <span class="emph-beats">beats</span> <span class="emph-how">how much</span> you tell.</div></div>
   </section>
 
   <!-- 02 vacancy + symptoms (gridded) -->
@@ -473,7 +493,7 @@ section.dark .fold-stage{color:var(--ink);}
 
   <div class="footer">
     Luck Surface Area_Revised &middot; a visual essay<br>
-    By <a href="https://github.com/Carson-McKee" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(4,17,217,0.3);">Carson McKee</a> &middot; visual identity by <a href="https://www.behance.net/joynneji" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(4,17,217,0.3);">Joy Nneji</a>
+    By <a href="https://github.com/Carson-McKee" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(4,17,217,0.3);">Carson McKee</a> &middot; visual identity by <a href="https://www.linkedin.com/in/joynneji/" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(4,17,217,0.3);">Joy Nneji</a>
   </div>
 </div>
 <script>
