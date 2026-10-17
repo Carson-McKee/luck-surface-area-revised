@@ -95,10 +95,10 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 
 /* typed formula: 80s terminal */
 .hero-formula.typer{font-family:var(--mono);font-weight:500;letter-spacing:0;white-space:pre;min-height:1em;}
-.typer .op{color:var(--live);}
-.typer .caret{display:inline-block;width:0.55em;height:0.82em;margin-left:0.04em;vertical-align:-0.06em;background:var(--live);animation:blink 1.06s steps(1,end) infinite;}
+.typer .neq{color:var(--live);}
+.typer .caret{display:inline-block;width:0.5em;height:0.09em;margin-left:0.06em;vertical-align:-0.02em;background:var(--ink);opacity:0.55;animation:blink 1.06s steps(1,end) infinite;}
 .typer.busy .caret{animation:none;}
-@keyframes blink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+@keyframes blink{0%,49%{opacity:0.55;}50%,100%{opacity:0;}}
 @media (prefers-reduced-motion:reduce){.typer .caret{animation:none;opacity:0;}}
 
 /* HERO: title leads, then formula */
@@ -508,9 +508,9 @@ section.dark .fold-stage{color:var(--ink);}
 (function(){
   const box=document.querySelector('.typer'); if(!box) return;
   const out=box.querySelector('.tw');
-  const OPS={'=':1,'\u2260':1,'\u00d7':1};
+  
   let buf='';
-  const paint=()=>{out.innerHTML=buf.split('').map(c=>OPS[c]?'<span class="op">'+c+'</span>':c).join('');};
+  const paint=()=>{out.innerHTML=buf.split('').map(c=>c==='\u2260'?'<span class="neq">'+c+'</span>':c).join('');};
   const wait=ms=>new Promise(r=>setTimeout(r,ms));
   const type=async t=>{for(const c of t){buf+=c;paint();await wait(c===' '?70:95+Math.random()*90);}};
   const back=async(n,ms)=>{for(let i=0;i<n;i++){buf=buf.slice(0,-1);paint();await wait(ms);}};
