@@ -94,7 +94,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 @media (prefers-reduced-motion:reduce){.strain{animation:none!important;}}
 
 /* typed formula: 80s terminal */
-.hero-formula.typer{font-family:var(--mono);font-weight:500;letter-spacing:0;white-space:pre;min-height:1em;}
+.hero-formula.typer{font-family:var(--mono);font-weight:500;letter-spacing:-0.04em;white-space:pre;min-height:1em;font-size:clamp(32px,5.6vw,72px);}
+.typer .sp{display:inline-block;width:0.3em;}
 .typer .neq{color:var(--live);}
 .typer .caret{display:inline-block;width:0.5em;height:0.09em;margin-left:0.06em;vertical-align:-0.02em;background:var(--ink);opacity:0.55;animation:blink 1.06s steps(1,end) infinite;}
 .typer.busy .caret{animation:none;}
@@ -510,7 +511,7 @@ section.dark .fold-stage{color:var(--ink);}
   const out=box.querySelector('.tw');
   
   let buf='';
-  const paint=()=>{out.innerHTML=buf.split('').map(c=>c==='\u2260'?'<span class="neq">'+c+'</span>':c).join('');};
+  const paint=()=>{out.innerHTML=buf.split('').map(c=>c==='\u2260'?'<span class="neq">'+c+'</span>':c===' '?'<span class="sp"> </span>':c).join('');};
   const wait=ms=>new Promise(r=>setTimeout(r,ms));
   const type=async t=>{for(const c of t){buf+=c;paint();await wait(c===' '?70:95+Math.random()*90);}};
   const back=async(n,ms)=>{for(let i=0;i<n;i++){buf=buf.slice(0,-1);paint();await wait(ms);}};
