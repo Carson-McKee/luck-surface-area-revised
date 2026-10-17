@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use or reference this research, please cite it as below."
+type: dataset
+title: "Luck Surface Area, Revised"
+version: v.01.01
+date-released: 2026-10-19
+authors:
+  - family-names: McKee
+    given-names: Carson
+    affiliation: "Post-Industrial School; Langara College"
+abstract: >-
+  Jason Roberts' 2010 formula for luck, L = D × T (luck equals doing times
+  telling), treats telling as a quantity. This research argues that telling is
+  also an environment. Exploratory interviews with eight founders found that
+  the environment where they spent the most time (social platforms, 9.4 hours
+  a month) returned the least perceived serendipity (2.62 out of 5), while
+  structured events took less than half the time and returned the most
+  (3.62). The essay proposes a revised formula, L = D × T × e, and three tests
+  for the environment term: constraint, frame and friction.
+keywords:
+  - serendipity
+  - luck surface area
+  - networking
+  - founders
+  - weak ties
+  - structural holes
+  - digital culture
+  - post-industrial
+license: CC-BY-4.0
+url: "https://carson-mckee.github.io/luck-surface-area-revised/"
+repository-code: "https://github.com/carson-mckee/luck-surface-area-revised"
