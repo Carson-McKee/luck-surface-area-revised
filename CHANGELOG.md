@@ -2,7 +2,7 @@
 
 Versions follow the essay's label, LSA_V.MAJOR.MINOR. Corrections raise the last number. Substantive revisions raise the middle number.
 
-## v.01.01 · 2026-10-18
+## v.01.01 · 2026-10-19
 
 First publication.
 
