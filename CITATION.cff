@@ -3,7 +3,7 @@ message: "If you use or reference this research, please cite it as below."
 type: dataset
 title: "Luck Surface Area_Revised"
 version: v.01.01
-date-released: 2026-10-19
+date-released: 2026-10-18
 authors:
   - family-names: McKee
     given-names: Carson
