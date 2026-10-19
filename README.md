@@ -15,9 +15,11 @@ The essay proposes a revised formula, **L = D × T × e**, where *e* is the envi
 
 ## How to cite
 
-McKee, C. (2026). *Luck Surface Area_Revised* (Version v.01.01) [Visual essay]. Post-Industrial School. https://carson-mckee.github.io/luck-surface-area-revised/
+McKee, C. (2026). *Luck Surface Area_Revised* (Version v.01.01) [Visual essay]. Post-Industrial School. https://doi.org/10.5281/zenodo.23479711
 
-A permanent DOI will be added here once the v.01.01 release is archived. GitHub's "Cite this repository" button uses [`CITATION.cff`](CITATION.cff).
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23479711.svg)](https://doi.org/10.5281/zenodo.23479711)
+
+Archived on Zenodo. GitHub's "Cite this repository" button uses [`CITATION.cff`](CITATION.cff).
 
 ## Method and limits
 
