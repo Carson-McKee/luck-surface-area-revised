@@ -23,7 +23,7 @@ Archived on Zenodo. GitHub's "Cite this repository" button uses [`CITATION.cff`]
 
 ## Method and limits
 
-The primary data comes from an exploratory remote survey of eight founders in Vancouver's startup ecosystem, run in April 2026 with ethics approval. Each reported the hours per month they spend in four environment types and rated the serendipity each returns on a scale of 1 to 5. Figures are founder-reported perceptions, not measured outcomes, and the sample is not statistically representative. Full method in [`METHODS.md`](METHODS.md). Aggregate figures in [`data/environments.csv`](data/environments.csv).
+The primary data comes from an exploratory remote survey of eight founders in Vancouver's startup ecosystem, run in April and May 2026 with ethics approval. Each reported the hours per month they spend in four environment types and rated the serendipity each returns on a scale of 1 to 5. Figures are founder-reported perceptions, not measured outcomes, and the sample is not statistically representative. Full method in [`METHODS.md`](METHODS.md). Aggregate figures in [`data/environments.csv`](data/environments.csv).
 
 The essay keeps its claims in three layers (section 08, "Summary"):
 

@@ -12,7 +12,7 @@ An exploratory survey of founders, read against prior quantitative research on p
 
 - **Participants:** eight founders in Vancouver's startup ecosystem.
 - **Recruitment:** the survey link was shared with local contacts, posted on LinkedIn and distributed at the Startup Vancouver conference.
-- **Period:** April 2026.
+- **Period:** April to May 2026.
 - **Format:** short remote survey, completed online.
 - **Ethics:** approved under the Langara College ARC Research Fund.
 
