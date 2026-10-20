@@ -1,6 +1,6 @@
 # Luck Surface Area_Revised
 
-**Research Output 01 of the [Post-Industrial School](https://carson-mckee.github.io/post-industrial-school/)**
+**ARC Fund Research · [Post-Industrial School](https://carson-mckee.github.io/post-industrial-school/)**
 Carson McKee ([ORCID 0009-0004-8818-7937](https://orcid.org/0009-0004-8818-7937)) · Visual identity by [Joy Nneji](https://www.linkedin.com/in/joynneji/) · Version v.01.01 · October 2026
 
 **Read the visual essay:** https://carson-mckee.github.io/luck-surface-area-revised/
